@@ -6,13 +6,13 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 16:18:30 by fgeslin           #+#    #+#             */
-/*   Updated: 2022/11/12 12:09:55 by fgeslin          ###   ########.fr       */
+/*   Updated: 2022/11/12 13:58:05 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_strlen(const char *str)
+static int	ft_strlen(const char *str)
 {
 	int	i;
 
@@ -34,8 +34,11 @@ char	*ft_strnjoin(char *s1, const char *s2, int s2_size)
 		return (NULL);
 	s1_size = ft_strlen(s1);
 	str = malloc((s1_size + s2_size + 1) * sizeof(char));
-	if (str == NULL)
+	if (!str)
+	{
+		free (s1);
 		return (NULL);
+	}
 	i = -1;
 	while (++i < s1_size)
 		str[i] = s1[i];
@@ -45,16 +48,4 @@ char	*ft_strnjoin(char *s1, const char *s2, int s2_size)
 	str[i] = 0;
 	free (s1);
 	return (str);
-}
-
-void	*ft_memset(void *b, int c, size_t len)
-{
-	size_t			i;
-	unsigned char	*ptr;
-
-	ptr = b;
-	i = -1;
-	while (++i < len)
-		ptr[i] = c;
-	return (b);
 }

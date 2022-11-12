@@ -6,65 +6,68 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 16:18:35 by fgeslin           #+#    #+#             */
-/*   Updated: 2022/11/12 12:23:24 by fgeslin          ###   ########.fr       */
+/*   Updated: 2022/11/12 14:10:40 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_setbuf(char **buf, int fd, ssize_t *read_size)
+static int	ft_initbuf(t_buf *buf, int fd, char **str, ssize_t *start)
 {
-	*buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!*buf)
-		return (0);
-	*read_size = read(fd, *buf, BUFFER_SIZE);
-	if (*read_size <= 0)
+	if (!(buf->str))
 	{
-		free (*buf);
-		*buf = NULL;
-		return (0);
+		buf->str = malloc((BUFFER_SIZE + 1) * sizeof(char));
+		if (!buf->str)
+			return (-1);
+		buf->readlen = read(fd, buf->str, BUFFER_SIZE);
+		if (buf->readlen <= 0)
+		{
+			free (buf->str);
+			buf->str = NULL;
+			return (-1);
+		}
 	}
-	return (1);
+	*str = NULL;
+	*start = buf->ind;
+	return (0);
+}
+
+char	*ft_clearbuf(t_buf *buf, char **str)
+{
+	free (buf->str);
+	buf->str = NULL;
+	if (buf->readlen == -1)
+	{
+		free (*str);
+		*str = NULL;
+		return (NULL);
+	}
+	return (*str);
 }
 
 char	*get_next_line(int fd)
 {
-	static char		*buf = 0;
-	static ssize_t	i = 0;
-	static ssize_t	read_size = 0;
+	static t_buf	buf = {0, 0, 0};
 	ssize_t			start;
 	char			*str;
 
-	if (!buf)
-		if (!ft_setbuf(&buf, fd, &read_size))
-			return (NULL);
-	str = 0;
-	start = i;
-	while (i <= read_size)
+	if (ft_initbuf(&buf, fd, &str, &start) == -1)
+		return (NULL);
+	while (buf.ind <= buf.readlen)
 	{
-		if (i == read_size)
+		if (buf.ind == buf.readlen)
 		{
-			str = ft_strnjoin(str, buf + start, i - start);
-			read_size = read(fd, buf, BUFFER_SIZE);
-			if (read_size <= 0)
-			{
-				free (buf);
-				buf = NULL;
-				return (str);
-			}
-			i = 0;
+			str = ft_strnjoin(str, buf.str + start, buf.ind - start);
+			buf.readlen = read(fd, buf.str, BUFFER_SIZE);
+			buf.ind = 0;
 			start = 0;
-			buf[read_size] = 0;
-			if (buf[i] == '\n')
-				break ;
+			if (buf.readlen <= 0)
+				return (ft_clearbuf(&buf, &str));
+			buf.str[buf.readlen] = 0;
 		}
-		else
-		{
-			if (buf[i] == '\n')
-				break ;
-			i++;
-		}
+		if (buf.str[buf.ind] == '\n')
+			break ;
+		buf.ind++;
 	}
-	str = ft_strnjoin(str, buf + start, ++i - start);
-	return (str);
+	return (ft_strnjoin(str, buf.str + start, ++buf.ind - start));
 }
