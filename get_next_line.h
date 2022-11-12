@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 16:18:33 by fgeslin           #+#    #+#             */
-/*   Updated: 2022/11/12 13:49:55 by fgeslin          ###   ########.fr       */
+/*   Updated: 2022/11/12 14:14:50 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-
-# include <stdio.h> //DEBUG
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1

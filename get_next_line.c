@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 16:18:35 by fgeslin           #+#    #+#             */
-/*   Updated: 2022/11/12 14:10:40 by fgeslin          ###   ########.fr       */
+/*   Updated: 2022/11/12 14:14:45 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	ft_initbuf(t_buf *buf, int fd, char **str, ssize_t *start)
 	return (0);
 }
 
-char	*ft_clearbuf(t_buf *buf, char **str)
+static char	*ft_clearbuf(t_buf *buf, char **str)
 {
 	free (buf->str);
 	buf->str = NULL;
