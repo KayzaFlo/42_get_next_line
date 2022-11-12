@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 16:18:30 by fgeslin           #+#    #+#             */
-/*   Updated: 2022/11/10 14:25:46 by fgeslin          ###   ########.fr       */
+/*   Updated: 2022/11/12 12:09:55 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,60 +17,44 @@ int	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i] != '\0')
 		i++;
 	return (i);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_strnjoin(char *s1, const char *s2, int s2_size)
 {
-	size_t	i;
 	char	*str;
+	int		s1_size;
+	int		i;
 
-	if (!s || len <= 0)
+	if ((!s1 && !s2) || !s2_size)
 		return (NULL);
-	if ((size_t)ft_strlen(s) < len)
-		len = ft_strlen(s);
-	str = malloc((len + 1) * sizeof(char));
+	s1_size = ft_strlen(s1);
+	str = malloc((s1_size + s2_size + 1) * sizeof(char));
 	if (str == NULL)
 		return (NULL);
 	i = -1;
-	while (++i < len)
-	{
-		if (i + start < (size_t)ft_strlen(s))
-			str[i] = s[i + start];
-		else
-			str[i] = 0;
-	}
+	while (++i < s1_size)
+		str[i] = s1[i];
+	--i;
+	while (++i < s1_size + s2_size)
+		str[i] = s2[i - s1_size];
 	str[i] = 0;
+	free (s1);
 	return (str);
 }
 
-char	*ft_strjoin(char *start, char *end)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	char	*str;
-	int		i;
-	int		j;
+	size_t			i;
+	unsigned char	*ptr;
 
-	if (!start && !end)
-		return (NULL);
-	else if (!start)
-		return (end);
-	else if (!end)
-		return (start);
-	str = malloc((ft_strlen(start) + ft_strlen(end)) * sizeof(char));
+	ptr = b;
 	i = -1;
-	while (start[++i])
-		str[i] = start[i];
-	j = 0;
-	while (end[j])
-	{
-		str[i] = end[j];
-		i++;
-		j++;
-	}
-	str[i] = 0;
-	free(start);
-	free(end);
-	return (str);
+	while (++i < len)
+		ptr[i] = c;
+	return (b);
 }

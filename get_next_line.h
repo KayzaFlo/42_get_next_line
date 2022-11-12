@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 16:18:33 by fgeslin           #+#    #+#             */
-/*   Updated: 2022/11/10 13:26:06 by fgeslin          ###   ########.fr       */
+/*   Updated: 2022/11/12 12:24:32 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,13 @@
 # include <stdio.h> //DEBUG
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 0
+#  define BUFFER_SIZE 1
 # endif
 
-typedef struct s_curbuf
-{
-	int		i;
-	char	*str;
-}	t_curbuf;
+char	*get_next_line(int fd);
 
 int		ft_strlen(const char *str);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char *start, char *end);
-
-char	*get_next_line(int fd);
+char	*ft_strnjoin(char *s1, const char *s2, int s2_size);
+void	*ft_memset(void *b, int c, size_t len);
 
 #endif
